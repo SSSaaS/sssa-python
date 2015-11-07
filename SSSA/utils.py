@@ -16,36 +16,27 @@ class utils:
     def split_ints(self, secret):
         result = []
 
-        for i in range(0, int(len(secret)/32) + 1):
-            text = secret[i*32:(i+1)*32]
-            text = codecs.encode(bytes(text, "utf8"), 'hex_codec') + "00"*(32 - len(text))
-            result.append(int(text, 16))
+        working = None
+        byte_object = None
+        try:
+            byte_object = bytes(secret, "utf8")
+        except:
+            byte_object = bytes(secret)
+        text = str(codecs.encode(byte_object, 'hex_codec').decode('utf8')) + "00"*(32 - (len(byte_object) % 32))
+
+        for i in range(0, int(len(text)/32)):
+            result.append(int(text[i*32:(i+1)*32], 16))
 
         return result
 
     def merge_ints(self, secrets):
         result = ""
-        for index,secret in enumerate(secrets):
-            if index == len(secrets)-1:
-                working = ""
-                secret_hex = hex(secret)[2:].replace("L", "")
-                secret_hex = "0" * (64-len(secret_hex)) + secret_hex
-                isnull = True
-                for i in range(len(secret_hex)-2, -2, -2):
-                    if secret_hex[i:i+2] == "00" and isnull == True:
-                        pass
-                    else:
-                        isnull = False
-                        working += chr(int(secret_hex[i:i+2], 16))
-                result += working[::-1]
-            else:
-                working = ""
-                secret_hex = hex(int(secret))[2:].replace("L", "")
-                secret_hex = "0" * (64-len(secret_hex)) + secret_hex
-                for i in range(len(secret_hex)-2, -2, -2):
-                    working += chr(int(secret_hex[i:i+2], 16))
-                result += working[::-1]
-        return result
+        for secret in secrets:
+            hex_data = hex(secret)[2:].replace("L", "")
+            hex_data = "0"*(len(hex_data) % 2) + hex_data
+            result += "00"*(32 - len(hex_data)) + hex_data
+
+        return str(codecs.decode(result, 'hex_codec').decode('utf8')).rstrip("\00\x00")
 
     def evaluate_polynomial(self, coefficients, value):
         result = 0
@@ -58,10 +49,24 @@ class utils:
     def to_base64(self, number):
         tmp = hex(number)[2:].replace("L", "")
         tmp = "0"*(len(tmp) % 2) + tmp
-        return base64.urlsafe_b64encode('\00'*(64 - len(tmp)) + tmp.decode("hex"))
+
+        try:
+            tmp = bytes(tmp, "utf8")
+        except:
+            tmp = bytes(tmp)
+
+        return str(base64.urlsafe_b64encode(b'\00'*(64 - len(tmp)) + codecs.decode(tmp, 'hex_codec')).decode('utf8'))
 
     def from_base64(self, number):
-        return int(base64.urlsafe_b64decode(number).encode("hex"), 16)
+        tmp = base64.urlsafe_b64decode(number)
+        try:
+            tmp = bytes(tmp, "utf8")
+        except:
+            tmp = bytes(tmp)
+
+
+
+        return int(codecs.encode(tmp, 'hex_codec'), 16)
 
     def gcd(self, a, b):
         if b == 0:
@@ -77,4 +82,3 @@ class utils:
             if number < 0:
                 remainder *= -1
             return (self.prime + remainder) % self.prime
-

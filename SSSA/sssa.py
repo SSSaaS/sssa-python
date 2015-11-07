@@ -6,7 +6,7 @@ class sssa:
 
     def create(self, minimum, shares, raw):
         if (shares < minimum):
-            return        
+            return
 
         secret = self.util.split_ints(raw)
         numbers = [0]
@@ -29,9 +29,9 @@ class sssa:
                 while value in numbers:
                     value = self.util.random()
                 numbers.append(value)
-                
+
                 y = self.util.evaluate_polynomial(polynomial[j], value)
-                
+
                 result[i] += self.util.to_base64(value)
                 result[i] += self.util.to_base64(y)
 
@@ -39,12 +39,12 @@ class sssa:
 
     def combine(self, shares):
         secrets = []
-        
+
         for index,share in enumerate(shares):
             if len(share) % 88 != 0:
                 return
-            
-            count = len(share) / 88
+
+            count = int(len(share) / 88)
             secrets.append([])
 
             for i in range(0, count):
@@ -64,8 +64,8 @@ class sssa:
                         current = product[part_index][0]
                         numerator = (numerator * (-1*current)) % self.util.prime
                         denominator = (denominator * (origin - current)) % self.util.prime
-                
+
                 working = ((originy * numerator * self.util.mod_inverse(denominator)) + self.util.prime)
                 secret[part_index] = (secret[part_index] + working) % self.util.prime
 
-        return self.util.merge_ints(secret) 
+        return self.util.merge_ints(secret)
