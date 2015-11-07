@@ -1,4 +1,5 @@
 import base64
+import codecs
 import math
 import struct
 from random import SystemRandom
@@ -15,9 +16,9 @@ class utils:
     def split_ints(self, secret):
         result = []
 
-        for i in range(0, len(secret)/32 + 1):
+        for i in range(0, int(len(secret)/32) + 1):
             text = secret[i*32:(i+1)*32]
-            text = text.encode('hex') + "00"*(32 - len(text))
+            text = codecs.encode(bytes(text, "utf8"), 'hex_codec') + "00"*(32 - len(text))
             result.append(int(text, 16))
 
         return result
