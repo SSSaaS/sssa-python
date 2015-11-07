@@ -1,5 +1,5 @@
 import unittest
-from sssa import sssa
+from SSSA import sssa
 
 class TestStringMethods(unittest.TestCase):
     def test_create_combine(self):

@@ -22,21 +22,32 @@ class utils:
             byte_object = bytes(secret, "utf8")
         except:
             byte_object = bytes(secret)
-        text = str(codecs.encode(byte_object, 'hex_codec').decode('utf8')) + "00"*(32 - (len(byte_object) % 32))
+        text = codecs.encode(byte_object, 'hex_codec').decode('utf8') + "00"*(32 - (len(byte_object) % 32))
 
-        for i in range(0, int(len(text)/32)):
-            result.append(int(text[i*32:(i+1)*32], 16))
+        for i in range(0, int(len(text)/64)):
+            result.append(int(text[i*64:(i+1)*64], 16))
 
         return result
 
     def merge_ints(self, secrets):
         result = ""
+
         for secret in secrets:
             hex_data = hex(secret)[2:].replace("L", "")
             hex_data = "0"*(len(hex_data) % 2) + hex_data
-            result += "00"*(32 - len(hex_data)) + hex_data
+            hex_data = "0"*(64 - (len(hex_data))) + hex_data
+            result += hex_data
 
-        return str(codecs.decode(result, 'hex_codec').decode('utf8')).rstrip("\00\x00")
+        byte_object = None
+        try:
+            byte_object = bytes(result, "utf8")
+
+            return codecs.decode(byte_object, 'hex_codec').decode('utf8').rstrip("\00\x00")
+        except:
+            byte_object = bytes(result)
+
+            return codecs.decode(byte_object, 'hex_codec').rstrip("\00\x00")
+        pass
 
     def evaluate_polynomial(self, coefficients, value):
         result = 0

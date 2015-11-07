@@ -1,5 +1,7 @@
+# -*- coding: utf8 -*-
+
 import unittest
-from utils import utils
+from SSSA import utils
 
 class TestStringMethods(unittest.TestCase):
     def test_random(self):
@@ -22,6 +24,12 @@ class TestStringMethods(unittest.TestCase):
     def test_split_merge(self):
         util = utils()
         values = ["N17FigASkL6p1EOgJhRaIquQLGvYV0", "0y10VAfmyH7GLQY6QccCSLKJi8iFgpcSBTLyYOGbiYPqOpStAf1OYuzEBzZR", "KjRHO1nHmIDidf6fKvsiXWcTqNYo2U9U8juO94EHXVqgearRISTQe0zAjkeUYYBvtcB8VWzZHYm6ktMlhOXXCfRFhbJzBUsXaHb5UDQAvs2GKy6yq0mnp8gCj98ksDlUultqygybYyHvjqR7D7EAWIKPKUVz4of8OzSjZlYg7YtCUMYhwQDryESiYabFID1PKBfKn5WSGgJBIsDw5g2HB2AqC1r3K8GboDN616Swo6qjvSFbseeETCYDB3ikS7uiK67ErIULNqVjf7IKoOaooEhQACmZ5HdWpr34tstg18rO"]
+        for value in values:
+            self.assertEqual(util.merge_ints(util.split_ints(value)), value)
+
+    def test_split_merge_odds(self):
+        util = utils()
+        values = ["a" + "\0"*100 + "a", "a"*31 + "哈囉世界", "こんにちは、世界"*32]
         for value in values:
             self.assertEqual(util.merge_ints(util.split_ints(value)), value)
 
