@@ -48,14 +48,25 @@ class utils:
 
     def to_base64(self, number):
         tmp = hex(number)[2:].replace("L", "")
-        tmp = "0"*(len(tmp) % 2) + tmp
+        tmp = "0"*(64 - len(tmp)) + tmp
 
         try:
             tmp = bytes(tmp, "utf8")
         except:
             tmp = bytes(tmp)
 
-        return str(base64.urlsafe_b64encode(b'\00'*(64 - len(tmp)) + codecs.decode(tmp, 'hex_codec')).decode('utf8'))
+        result = str(base64.urlsafe_b64encode(b'\00'*(64 - len(tmp)) + codecs.decode(tmp, 'hex_codec')).decode('utf8'))
+
+        if len(result) != 44:
+            print("error: result, tmp, number")
+            print(result)
+            print(len(result))
+            print(tmp)
+            print(len(tmp))
+            print(number)
+            print(hex(number))
+            print(hex(codecs.decode(tmp, 'hex_codec')))
+        return result
 
     def from_base64(self, number):
         tmp = base64.urlsafe_b64decode(number)
@@ -63,8 +74,6 @@ class utils:
             tmp = bytes(tmp, "utf8")
         except:
             tmp = bytes(tmp)
-
-
 
         return int(codecs.encode(tmp, 'hex_codec'), 16)
 
