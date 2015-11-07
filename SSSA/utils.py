@@ -1,4 +1,5 @@
 import base64
+import math
 import struct
 from random import SystemRandom
 
@@ -46,8 +47,7 @@ class utils:
         return result
 
     def evaluate_polynomial(self, coefficients, value):
-        result = coefficients[0] % self.prime
-        
+        result = 0
         for index,coefficient in enumerate(coefficients):
             result += coefficient*(value**index % self.prime)
             result = result % self.prime
@@ -56,7 +56,24 @@ class utils:
 
     def to_base64(self, number):
         tmp = hex(number)[2:].replace("L", "")
+        tmp = "0"*(len(tmp) % 2) + tmp
         return base64.urlsafe_b64encode('\00'*(64 - len(tmp)) + tmp.decode("hex"))
 
     def from_base64(self, number):
-        return 
+        return int(base64.urlsafe_b64decode(number).encode("hex"), 16)
+
+    def gcd(self, a, b):
+        if b == 0:
+            return [a, 1, 0]
+        else:
+            n = int(math.floor(a*1.0/b))
+            c = a % b
+            r = self.gcd(b, c)
+            return [r[0], r[2], r[1] - r[2]*n]
+
+    def mod_inverse(self, number):
+            remainder = (self.gcd(self.prime, number % self.prime))[2]
+            if number < 0:
+                remainder *= -1
+            return (self.prime + remainder) % self.prime
+
