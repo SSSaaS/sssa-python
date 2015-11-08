@@ -34,9 +34,7 @@ class utils:
 
         for secret in secrets:
             hex_data = hex(secret)[2:].replace("L", "")
-            hex_data = "0"*(len(hex_data) % 2) + hex_data
-            hex_data = "0"*(64 - (len(hex_data))) + hex_data
-            result += hex_data
+            result += "0"*(64 - (len(hex_data))) + hex_data
 
         byte_object = None
         try:
