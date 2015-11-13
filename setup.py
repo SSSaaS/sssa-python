@@ -7,12 +7,12 @@ from setuptools import setup
 
 setup(
     name="sssa-python",
-    version="0.0.1",
-    url="https://git.cipherboy.com/SSSAAS/sssa-python",
+    version="0.0.2",
+    url="https://github.com/SSSaaS/sssa-python",
     license="MIT",
     author="Alexander Scheel",
     author_email="alexander.m.scheel@gmail.com",
-    description=("Helper Shamir's Secret Sharing module for Ruby"),
+    description=("Helper Shamir's Secret Sharing module for Python"),
     packages=["SSSA"],
     classifiers=[
         "Intended Audience :: Developers",
