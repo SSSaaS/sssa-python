@@ -10,16 +10,16 @@ Compatible with both Python 2.7 and 3.5; other versions untested.
 Note: this library is for a pure implementation of SSS in Python;
 if you are looking for the API Library for SSSaaS, look [here](https://github.com/SSSAAS/sssaas-python).
 
-    sssa.create(minimum int, shares int, raw string) - creates a set of shares
+    sssa.create(minimum, shares, raw) - creates a set of shares
 
-    sssa.combine(shares []string) - combines shares into secret
+    sssa.combine(shares) - combines shares into secret
 
 For more detailed documentation, check out docs/sssa.md
 
 ## Contributing
 We welcome pull requests, issues, security advice on this library, or other contributions you feel are necessary. Feel free to open an issue to discuss any questions you have about this library.
 
-The reference implementation for this cross-language project was written in Go, [here](https://github.com/SSSAAS/sssaas-golang).
+The reference implementation for this cross-language project was written in Go, [here](https://github.com/SSSAAS/sssa-golang).
 Please make sure all tests pass before submitting a pull request. In particular,
 `python ./utils_tests.py && python ./sssa_tests.py` will run all internal tests
 and the [go-libtest](https://github.com/SSSAAS/go-libtest) suite's tests should be run
