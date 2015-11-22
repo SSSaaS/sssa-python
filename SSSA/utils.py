@@ -78,7 +78,14 @@ class utils:
         return result
 
     def from_base64(self, number):
-        tmp = base64.urlsafe_b64decode(number)
+        byte_number = number
+        try:
+            byte_number = bytes(byte_number, "utf8")
+        except:
+            byte_number = bytes(byte_number)
+
+        tmp = base64.urlsafe_b64decode(byte_number)
+        
         try:
             tmp = bytes(tmp, "utf8")
         except:
