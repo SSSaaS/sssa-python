@@ -49,8 +49,8 @@ class utils:
 
     def evaluate_polynomial(self, coefficients, value):
         result = 0
-        for index,coefficient in enumerate(coefficients):
-            result += coefficient*(value**index % self.prime)
+        for coefficient in reversed(coefficients):
+            result = result * value + coefficient
             result = result % self.prime
 
         return result
@@ -85,7 +85,7 @@ class utils:
             byte_number = bytes(byte_number)
 
         tmp = base64.urlsafe_b64decode(byte_number)
-        
+
         try:
             tmp = bytes(tmp, "utf8")
         except:
