@@ -1,4 +1,6 @@
 # sssa-python
+[![Build Status](https://travis-ci.org/SSSaaS/sssa-python.svg?branch=master)](https://travis-ci.org/SSSaaS/sssa-python)
+
 An implementation of Shamir's Secret Sharing Algorithm in Python
 Compatible with both Python 2.7 and 3.5; other versions untested.
 
